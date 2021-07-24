@@ -5,6 +5,11 @@ import '../dummy_data.dart';
 class MealDetailScreen extends StatelessWidget {
   static const routeName = '/meal-detail';
 
+  final Function toggleFavorite;
+  final Function isFavorite;
+
+  MealDetailScreen(this.toggleFavorite, this.isFavorite);
+
   //deixar separado em um widget separado para otimizar, pois tem uma chamada ao Theme
   // e ele só reconstruiria o widget separado, que tem a chamada do Theme
   Widget buildSectionTitle(BuildContext context, String title) {
@@ -96,13 +101,9 @@ class MealDetailScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.delete,
+          isFavorite(mealId) ? Icons.star : Icons.star_border,
         ),
-        onPressed: () {
-          // Remove a tela que está no topo da pilha e retorna à tela anterior.
-          // Passar dados para o pop é possível recuperar na outra tela
-          Navigator.of(context).pop(mealId);
-        },
+        onPressed: () => toggleFavorite(mealId),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/favorites_screen.dart';
 import './dummy_data.dart';
 import './models/meal.dart';
 import './screens/filters_screen.dart';
@@ -25,6 +26,9 @@ class _MyAppState extends State<MyApp> {
 
   // Controla os Meals
   List<Meal> _availableMeals = DUMMY_MEALS;
+
+  // Refeições favoritas
+  List<Meal> _favoriteMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     // Atualiza os filtros
@@ -54,6 +58,31 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  // Gerenciar os favoritos
+  void _toggleFavorite(String mealId) {
+    // - Adicionar ou remover o meal à lista de favoritos
+
+    // Recupera o index do meal
+    final existingIndex =
+        _favoriteMeals.indexWhere((meal) => meal.id == mealId);
+
+    if (existingIndex >= 0) {
+      //-1 se não achou
+      setState(() {
+        _favoriteMeals.removeAt(existingIndex);
+      });
+    } else {
+      setState(() {
+        _favoriteMeals.add(DUMMY_MEALS.firstWhere((meal) => meal.id == mealId));
+      });
+    }
+  }
+
+  // Verifica se a refeição está marcada como favorita
+  bool _isMealFavorite(String id) {
+    return _favoriteMeals.any((meal) => meal.id == id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -81,10 +110,11 @@ class _MyAppState extends State<MyApp> {
       //home: CategoriesScreen(),
       //initialRoute: '/', //default é '/'
       routes: {
-        '/': (ctx) => TabsScreen(),
+        '/': (ctx) => TabsScreen(_favoriteMeals),
         CategoryMealsScreen.routeName: (ctx) =>
             CategoryMealsScreen(_availableMeals),
-        MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
+        MealDetailScreen.routeName: (ctx) =>
+            MealDetailScreen(_toggleFavorite, _isMealFavorite),
         //passando parâmetros para a rota (o ponteiro para a função)
         FiltersScreen.routeName: (ctx) => FiltersScreen(_filters, _setFilters),
       },
