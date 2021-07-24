@@ -9,6 +9,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
+  final Function removeItem;
 
   MealItem({
     @required this.id,
@@ -17,6 +18,7 @@ class MealItem extends StatelessWidget {
     @required this.duration,
     @required this.complexity,
     @required this.affordability,
+    @required this.removeItem,
   });
 
   String get complexityText {
@@ -48,10 +50,19 @@ class MealItem extends StatelessWidget {
   }
 
   void selectMeal(BuildContext context) {
-    Navigator.of(context).pushNamed(
+    Navigator.of(context)
+        .pushNamed(
       MealDetailScreen.routeName,
       arguments: id,
-    );
+      // result vai receber se tiver valor passado por parametro para o pop na outra tela
+      // executa o then quando voltar pra essa tela!!! Quando a de cima sofrer o pop
+    )
+        .then((result) {
+      //remover a meal da lista
+      if (result != null) {
+        removeItem(result);
+      }
+    });
   }
 
   @override

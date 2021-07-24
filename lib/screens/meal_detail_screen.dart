@@ -5,6 +5,8 @@ import '../dummy_data.dart';
 class MealDetailScreen extends StatelessWidget {
   static const routeName = '/meal-detail';
 
+  //deixar separado em um widget separado para otimizar, pois tem uma chamada ao Theme
+  // e ele só reconstruiria o widget separado, que tem a chamada do Theme
   Widget buildSectionTitle(BuildContext context, String title) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -52,7 +54,10 @@ class MealDetailScreen extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            buildSectionTitle(context, 'Ingredients'),
+            buildSectionTitle(
+              context,
+              'Ingredients',
+            ),
             buildContainer(
               ListView.builder(
                 itemBuilder: (ctx, index) => Card(
@@ -88,6 +93,16 @@ class MealDetailScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.delete,
+        ),
+        onPressed: () {
+          // Remove a tela que está no topo da pilha e retorna à tela anterior.
+          // Passar dados para o pop é possível recuperar na outra tela
+          Navigator.of(context).pop(mealId);
+        },
       ),
     );
   }
