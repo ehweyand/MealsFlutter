@@ -1,5 +1,5 @@
 // vai gerenciar apenas as abas e carregar outras telas
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import './favorites_screen.dart';
 import './categories_screen.dart';
 
@@ -46,6 +46,6 @@ class _TabsScreenState extends State<TabsScreen> {
 /*
 O conteúdo que carregamos em uma tab não deve trazer um widget de scaffold, pois já será
 coordenado pela tabs_screen
-
+*/
 
 */
